@@ -4,9 +4,8 @@
   connection: local
   gather_facts: no
 
-  include_vars:
-    
-
+  vars_files:
+    - ./vars/usercase3_vars.yml
 
   tasks:
     - name: create ec2 instance
