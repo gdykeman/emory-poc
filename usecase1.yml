@@ -4,6 +4,9 @@
   connection: local
   gather_facts: no
 
+  vars_files:
+    - vars/usecase1.yml
+
   tasks:
     - name: Provision virtual machine
       vmware_guest:
@@ -24,6 +27,9 @@
 
 - hosts: webapp_vm
   become: yes
+
+  vars_files:
+    - vars/usecase1.yml
 
   tasks:
     - name: Create temporary build directory
