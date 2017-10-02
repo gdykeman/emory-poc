@@ -1,0 +1,12 @@
+---
+
+vmware_hostname: vcenter.example.com
+vmware_username: administrator@vsphere.local
+vmware_password: password123
+vmware_datacenter: MyDatacenter
+vmware_cluster: MyCluster
+vmware_resource_pool: '/Resources'
+
+vmware_webapp_template: webapp
+
+users_git_repo: https://git.example.com/path/to/repo.git

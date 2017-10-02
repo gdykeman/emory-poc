@@ -1,4 +1,39 @@
 ---
-- name: install apache and mysql on Linux
-  hosts: all
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Provision virtual machine
+      vmware_guest:
+        hostname: '{{ vmware_hostname }}'
+        username: '{{ vmware_username }}'
+        password: '{{ vmware_password }}'
+        validate_certs: no
+        datacenter: '{{ vmware_datacenter }}'
+        cluster: '{{ vmware_cluster }}'
+        name: '{{ vm_name | default("webapp") }}'
+        template: '{{ vmware_webapp_template }}'
+      register: webapp_vm_provision
+
+    - name: Add host to inventory
+      add_host:
+        name: webapp_vm
+        hostname: '{{ webapp_vm_provision.instance.ipv4 }}'
+
+- hosts: webapp_vm
   become: yes
+
+  tasks:
+    - name: Create temporary build directory
+      tempfile:
+        state: directory
+        suffix: webapp
+      register: tmp_build_dir
+
+    - name: Clone users repo
+      git:
+        repo: '{{ users_git_repo }}'
+        dest: '{{ tmp_build_dir.path }}/users'
+        depth: 1
