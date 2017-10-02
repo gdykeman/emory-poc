@@ -1,0 +1,4 @@
+---
+- name: github integration
+  hosts: all
+  become: yes

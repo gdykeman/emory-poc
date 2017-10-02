@@ -1,0 +1,39 @@
+---
+- name: spin up VM in AWS
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  include_vars:
+    
+
+
+  tasks:
+    - name: create ec2 instance
+      ec2:
+        keypair: "{{ ec2_keypair }}"
+        type: "{{ ec2_type }}"
+        image: "{{ ec2_image }}"
+        region: "{{ ec2_region }}"
+        exact_count: "{{ ec2_instance_count | int }}"
+        group_id: "{{ ec2_group_id }}"
+        vpc_subnet_id: "{{ ec2_vpc_subnet_id }}"
+        assign_public_ip: yes
+        instance_tags:
+          name: "{{ tower_user_name }}-demo"
+          ansible_lab: true
+          user_id: "{{ tower_user_name }}"
+        count_tag:
+          name: "{{ tower_user_name }}-demo"
+        wait: true
+      register: ec2
+
+    - name: Wait for SSH to come up
+      wait_for:
+        host: "{{ item.public_dns_name }}"
+        port: 22
+        delay: 30
+        timeout: 320
+        state: started
+      with_items: "{{ ec2.instances }}"
+      delegate_to: localhost

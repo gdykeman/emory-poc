@@ -1,0 +1,4 @@
+---
+- name: install apache and mysql on Linux
+  hosts: all
+  become: yes
