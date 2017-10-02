@@ -1,6 +1,6 @@
 ---
 - name: spin up VM in AWS
-  hosts: all
+  hosts: localhost
   connection: local
   gather_facts: no
 

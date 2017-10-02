@@ -1,3 +1,15 @@
 ---
 - name: install sql server on Windows
-  hosts: all
+  hosts: windows
+
+  tasks:
+    - name: create a mapped drive under Z
+      win_mapped_drive:
+        letter: Z
+        path: \\domain\appdata\accounting
+
+    - name: Run command that only runs if folder exists and runs from a specific folder
+      win_command: command to execute installation
+      args:
+        chdir: C:\somedir\
+        creates: C:\backup\

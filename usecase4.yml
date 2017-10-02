@@ -1,4 +1,11 @@
 ---
 - name: peoplsoft use case
-  hosts: all
+  hosts: peoplesoft
   become: yes
+
+  tasks:
+    - name: issue setup command
+      command: setup command
+
+    - name: issue psadmin command to clear cache
+      command: psadmin command
