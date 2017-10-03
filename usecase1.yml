@@ -22,24 +22,58 @@
 
     - name: Add host to inventory
       add_host:
-        name: webapp_vm
+        name: web
         hostname: '{{ webapp_vm_provision.instance.ipv4 }}'
 
-- hosts: webapp_vm
+- hosts: web
   become: yes
 
   vars_files:
     - vars/usecase1.yml
 
   tasks:
-    - name: Create temporary build directory
-      tempfile:
-        state: directory
-        suffix: webapp
-      register: tmp_build_dir
+    - name: Create user accounts
+      user:
+        name: '{{ item.name }}'
+        password: '{{ item.password | hash("sha1") }}'
+        state: present
+      with_items:
+        - '{{ system_users }}'
+        - '{{ web_users }}'
+        - '{{ dba_users }}'
 
-    - name: Clone users repo
-      git:
-        repo: '{{ users_git_repo }}'
-        dest: '{{ tmp_build_dir.path }}/users'
-        depth: 1
+    - name: Open firewall ports
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: '{{ item }}'
+        cstate: NEW,ESTABLISHED
+        jump: ACCEPT
+        state: present
+      with_items: '{{ open_ports }}'
+
+    - name: Install Apache
+      yum:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - httpd
+        - mod_ssl
+
+    - name: Install PHP modules
+      pear:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - Archive_Tar
+        - XML_RPC
+
+    - name: Install MySQL repo
+      yum:
+        name: https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+        state: present
+
+    - name: Install MySQL
+      yum:
+        name: mysql-community-server
+        state: present

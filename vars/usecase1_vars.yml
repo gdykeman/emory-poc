@@ -9,4 +9,26 @@ vmware_resource_pool: '/Resources'
 
 vmware_webapp_template: webapp
 
-users_git_repo: https://git.example.com/path/to/repo.git
+system_users:
+  - name: joe
+    password: password123
+  - name: bob
+    password: password123
+
+web_users:
+  - name: amy
+    password: password123
+  - name: greg
+    password: password123
+
+dba_users:
+  - name: steve
+    password: password123
+  - name: jack
+    password: password123
+
+open_ports:
+  - 80
+  - 443
+  - 3306
+  - 22
