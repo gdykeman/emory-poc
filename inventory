@@ -1,0 +1,9 @@
+[windows]
+winserv1 ansible_host=10.0.0.1
+
+[linux]
+web_node1 ansible_host=192.168.1.1
+
+[peoplesoft]
+peoplesoft1 ansible_host=172.16.1.1
+peoplesoft2 ansible_host=172.16.1.2
