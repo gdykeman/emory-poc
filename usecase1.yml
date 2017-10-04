@@ -1,31 +1,30 @@
 ---
+# - hosts: localhost
+#   connection: local
+#   gather_facts: no
+#
+#   vars_files:
+#     - vars/usecase1.yml
+#
+#   tasks:
+#     - name: Provision virtual machine
+#       vmware_guest:
+#         hostname: '{{ vmware_hostname }}'
+#         username: '{{ vmware_username }}'
+#         password: '{{ vmware_password }}'
+#         validate_certs: no
+#         datacenter: '{{ vmware_datacenter }}'
+#         cluster: '{{ vmware_cluster }}'
+#         name: '{{ vm_name | default("webapp") }}'
+#         template: '{{ vmware_webapp_template }}'
+#       register: webapp_vm_provision
+#
+#     - name: Add host to inventory
+#       add_host:
+#         name: web
+#         hostname: '{{ webapp_vm_provision.instance.ipv4 }}'
 
-- hosts: localhost
-  connection: local
-  gather_facts: no
-
-  vars_files:
-    - vars/usecase1.yml
-
-  tasks:
-    - name: Provision virtual machine
-      vmware_guest:
-        hostname: '{{ vmware_hostname }}'
-        username: '{{ vmware_username }}'
-        password: '{{ vmware_password }}'
-        validate_certs: no
-        datacenter: '{{ vmware_datacenter }}'
-        cluster: '{{ vmware_cluster }}'
-        name: '{{ vm_name | default("webapp") }}'
-        template: '{{ vmware_webapp_template }}'
-      register: webapp_vm_provision
-
-    - name: Add host to inventory
-      add_host:
-        name: web
-        hostname: '{{ webapp_vm_provision.instance.ipv4 }}'
-
-- hosts: web
+- hosts: linux
   become: yes
 
   vars_files:
