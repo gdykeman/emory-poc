@@ -1,2 +1,4 @@
 ---
 # Vars for linux host
+ansible_user: admin
+ansible_ssh_pass: ansible123
