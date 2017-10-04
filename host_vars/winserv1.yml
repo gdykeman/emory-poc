@@ -1,4 +1,5 @@
 ---
+# vars for windows node
 # it is suggested that these be encrypted with ansible-vault:
 # ansible-vault edit group_vars/windows.yml
 
