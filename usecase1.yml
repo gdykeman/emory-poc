@@ -28,7 +28,7 @@
   become: yes
 
   vars_files:
-    - vars/usecase1.yml
+    - vars/usecase1_vars.yml
 
   tasks:
     - name: Create user accounts
