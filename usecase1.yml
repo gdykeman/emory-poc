@@ -46,7 +46,7 @@
         chain: INPUT
         protocol: tcp
         destination_port: '{{ item }}'
-        cstate: NEW,ESTABLISHED
+        ctstate: NEW,ESTABLISHED
         jump: ACCEPT
         state: present
       with_items: '{{ open_ports }}'
